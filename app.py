@@ -1,13 +1,25 @@
 import streamlit as st
 from qa_chain import get_qa_chain
 
-st.set_page_config(page_title="Company AI Assistant")
-st.title("Ask the AI assistant")
+# App title
+st.set_page_config(page_title="🧠 RAG AI Assistant", layout="wide")
+st.title("📄 Ask Your PDF")
+st.caption("Powered by OpenAI + LangChain + FAISS")
 
-question = st.text_input("Ask the question")
+# Initialize the QA chain once
+@st.cache_resource
+def load_chain():
+    return get_qa_chain()
+
+qa_chain = load_chain()
+
+# Text input
+question = st.text_input("Ask a question based on your uploaded document:", "")
+
 if question:
-    qa_chain = get_qa_chain()
-    response = qa_chain.run(question)
-    st.write(response)
-
-
+    with st.spinner("Thinking... 🤔"):
+        try:
+            response = qa_chain.run(question)
+            st.success(response)
+        except Exception as e:
+            st.error(f"Error: {str(e)}")
