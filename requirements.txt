@@ -1,6 +1,7 @@
+streamlit
+langchain
 langchain-community
 openai
 faiss-cpu
-streamlit
-pymupdf
 python-dotenv
+tiktoken
